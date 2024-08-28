@@ -1,80 +1,50 @@
+//aditya kumar
+//21bcs9520
+
 #include <iostream>
-using namespace std;
 
+struct Node {
+    int data;
+    Node* next;
+};
 
+bool isCircular(Node* head) {
+    if (head == nullptr)
+        return false;
 
+    Node* slow = head;
+    Node* fast = head;
 
-void swap(int &a, int &b)
-{
-    int temp = a;
-    a = b;
-    b = temp;
-}
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
 
-
-
-
-
-int partition(int arr[], int low, int high)
-{
-    int pivot = arr[high];
-    int i = low - 1;
-    for (int j = low; j <= high - 1; j++)
-    {
-
-        if (arr[j] <= pivot)
-        {
-            i++;
-            swap(arr[i], arr[j]);
-        }
-    }
-    swap(arr[i + 1], arr[high]);
-    return (i + 1);
-}
-
-
-
-
-void quicksort(int arr[], int low, int high)
-{
-    if (low < high)
-    {
-
-        int pi = partition(arr, low, high);
-
-        quicksort(arr, low, pi - 1);
         
-        quicksort(arr, pi + 1, high);
+        if (slow == fast)
+            return true;
     }
+
+   
+    return false;
 }
 
-
-
-
-
-int main()
-{
-    int arr[10] ;
-    int n = 10;
-    
-    
-    cout << "enter array: \n"; 
-    for (int i = 0; i < n; i++)
-        cin>> arr[i] ;
-    cout << endl;
-    
-    
-    
-    quicksort(arr, 0, n - 1);
-    
+int main() {
    
-   
+    Node* head = new Node{1, nullptr};
+    head->next = new Node{2, nullptr};
+    head->next->next = new Node{3, nullptr};
+    head->next->next->next = head; 
 
-    cout << "Sorted array: \n";
-     for (int i = 0; i < n; i++)
-        cout << arr[i] << " ";
-    cout << endl;
+    if (isCircular(head))
+        std::cout << "Linked list is circular\n";
+    else
+        std::cout << "Linked list is not circular\n";
+
     
-    
+    delete head->next->next->next;
+    delete head->next->next;
+    delete head->next;
+    delete head;
+
     return 0;
 }
